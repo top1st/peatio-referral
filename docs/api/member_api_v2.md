@@ -2,7 +2,7 @@ Member API v2
 =============
 Member API is API which can be used by client application like SPA.
 
-**Version:** 1.8.47
+**Version:** 1.8.48
 
 **License:** https://github.com/rubykube/peatio/blob/master/LICENSE.md
 
@@ -548,3 +548,22 @@ Member API is API which can be used by client application like SPA.
 | Code | Description |
 | ---- | ----------- |
 | 200 | Returns list of member levels and the privileges they provide. |
+
+### /v2/currency/trades
+---
+##### ***GET***
+**Summary:** Get currency trades at last 24h
+
+**Description:** Get currency trades at last 24h
+
+**Parameters**
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| currency | query | Available values: bch, btc, dash, eth, ltc, trst, xrp, BCH, BTC, DASH, ETH, LTC, TRST, XRP | Yes | string |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | Get currency trades at last 24h |
