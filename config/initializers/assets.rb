@@ -18,6 +18,7 @@ Rails.application.config.assets.precompile.concat \
     funds.js
     html5.js
     market.js
+    custom.js
     swagger_ui.js
     swagger_ui.css
     swagger_ui_print.css

@@ -15,6 +15,15 @@
         <span><%= t('header.admin') %></span>
       </a>
     <% end %>
+    <a class="dropdown-item" href="<%= trading_path(current_market.id) %>" target="_blank">
+      <i class="fa fa-exchange"></i><span><%= t('header.market') %></span>
+    </a>
+    <a class="dropdown-item" href="<%= funds_path %>">
+      <i class="fa fa-money"></i><span><%= t('header.funds') %></span>
+    </a>
+    <a class="dropdown-item" href="<%= order_history_path %>">
+      <i class="fa fa-history"></i><span><%= t('header.history') %></span>
+    </a>
     <a class="dropdown-item" href="<%= main_app.signout_path %>">
       <i class="fa fa-sign-out"></i>
       <span><%= t('header.signout') %></span>

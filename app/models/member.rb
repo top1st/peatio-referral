@@ -13,11 +13,12 @@ class Member < ActiveRecord::Base
 
   scope :enabled, -> { where(disabled: false) }
 
-  before_validation :downcase_email, :assign_sn
+  before_validation :downcase_email, :assign_sn, :assign_code
 
   validates :sn,    presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true, email: true
   validates :level, numericality: { greater_than_or_equal_to: 0 }
+  validates :code,  presence: true, uniqueness: true
 
   after_create :touch_accounts
 
@@ -26,11 +27,13 @@ class Member < ActiveRecord::Base
   class << self
     def from_auth(auth_hash)
       member = locate_auth(auth_hash) || locate_email(auth_hash) || Member.new
+      puts ['auth_hash_value', auth_hash]
       member.tap do |member|
         member.transaction do
           info_hash       = auth_hash.fetch('info')
           member.email    = info_hash.fetch('email')
           member.level    = info_hash['level'] if info_hash.key?('level')
+          member.referral_code = info_hash['referral_code'] if info_hash.key?('referral_code')
           member.disabled = info_hash.key?('state') && info_hash['state'] != 'active'
           member.save!
           auth = Authentication.locate(auth_hash) || member.authentications.from_omniauth_data(auth_hash)
@@ -135,6 +138,17 @@ private
     end while Member.where(sn: self.sn).any?
   end
 
+  def assign_code
+    return unless code.blank?
+    begin
+      self.code = random_rf
+    end while Member.where(code: self.code).any?
+  end
+
+  def random_rf
+    "RF#{SecureRandom.hex(5).upcase}"
+  end
+
   def random_sn
     "SN#{SecureRandom.hex(5).upcase}"
   end
@@ -160,21 +174,24 @@ private
 end
 
 # == Schema Information
-# Schema version: 20180530122201
+# Schema version: 20180904132313
 #
 # Table name: members
 #
-#  id           :integer          not null, primary key
-#  level        :integer          default(0), not null
-#  sn           :string(12)       not null
-#  email        :string(255)      not null
-#  disabled     :boolean          default(FALSE), not null
-#  api_disabled :boolean          default(FALSE), not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id            :integer          not null, primary key
+#  level         :integer          default(0), not null
+#  sn            :string(12)       not null
+#  email         :string(255)      not null
+#  disabled      :boolean          default(FALSE), not null
+#  api_disabled  :boolean          default(FALSE), not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  referrel_code :string(255)
+#  code          :string(12)       not null
 #
 # Indexes
 #
+#  index_members_on_code      (code) UNIQUE
 #  index_members_on_disabled  (disabled)
 #  index_members_on_email     (email) UNIQUE
 #  index_members_on_sn        (sn) UNIQUE

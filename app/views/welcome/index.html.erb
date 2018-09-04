@@ -1,26 +1,46 @@
-<div class="container mt-5">
-  <div class="d-flex justify-content-center">
-    <div class="welcome-logo">
-      <a href="https://peatio.tech" target="blank">
-        <img src="<%= ENV['LOGO_URL'] || image_path('logo.svg') %>">
-      </a>
-    </div>
-  </div>
+<div class="container-fluid">
+  <div class="sub-container welcome-background py-5 d-flex flex-column justify-content-center" style="height: 660px">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 py-4">
+          <div class="landing-about mx-auto">
+            <h1><%= t('slogan.heading') %></h1>
+            <% if flash[:notice] || flash[:info] || flash[:alert] %>
+              <div class="row justify-content-center">
+                <div class="col-12">
+                  <%= render 'shared/flash' %>
+                </div>
+              </div>
+            <% else %>
+              <h4><%= t('slogan.text2') %></h4>
+            <% end %>
+          </div>
 
-  <section class="text-center" style="line-height: 1">
-    <h2><%= t('slogan.heading') %></h2>
-    <% if flash[:notice] || flash[:info] || flash[:alert] %>
-      <div class="row justify-content-center">
-        <div class="col-12">
-          <%= render 'shared/flash' %>
+        </div>
+        <div class="col-lg-6 py-4">
+          <div class="row justify-content-center">
+            <div class="sign-cover col py-5">
+              <div class="row justify-content-around">
+                <button class="col-sm-4 signup-btn">
+                  Sign Up
+                </button>
+                <div class="col-sm-1 signor-btn">
+                  or
+                </div>
+                <button class="col-sm-4 signin-btn">
+                  Sign In
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-    <% else %>
-      <h3><%= t('slogan.subheading') %></h3>
-      <p><%= t('slogan.text1') %></p>
-      <p><%= t('slogan.text2') %></p>
-    <% end %>
-  </section>
+
+    </div>
+
+  </div>
+
 
   <div class="row justify-content-center" id="getstart">
     <% unless current_user %>
@@ -37,11 +57,264 @@
       <div class="col-8 text-center">
         <a class="btn btn-primary btn-lg btn-block" href="<%= trading_path(current_market) %>" role="button">
           <small><%= t('header.getstart') %></small>
-          </a>
+        </a>
         <a class="btn btn-primary btn-lg btn-block" href="<%= settings_path %>" role="button">
           <small><%= t('header.settings') %></small>
-          </a>
+        </a>
       </div>
     <% end %>
+  </div>
+
+  <div class="sub-container ticker-auto-slider py-2">
+    <div class="text-center">
+      <div class="align-middle d-inline-block">
+        <img src="<%= image_path('coins/Bitcoin.png') %>"/>
+        <h4>BTC</h4>
+      </div>
+      <div class="align-middle d-inline-block text-left">
+        <h5>BTC / USD</h5>
+        <h5>$6703.13</h5>
+        <h5 class="text-danger">-346(-5.15%)</h5>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <div class="align-middle d-inline-block">
+        <img src="<%= image_path('coins/Ethereum.png') %>"/>
+        <h4>ETH</h4>
+      </div>
+      <div class="align-middle d-inline-block text-left">
+        <h5>ETH / USD</h5>
+        <h5>$6703.13</h5>
+        <h5 class="text-danger">-346(-5.15%)</h5>
+      </div>
+    </div>
+    <div class="text-center">
+      <div class="align-middle d-inline-block">
+        <img src="<%= image_path('coins/Litecoin.png') %>"/>
+        <h4>LTC</h4>
+      </div>
+      <div class="align-middle d-inline-block text-left">
+        <h5>LTC / USD</h5>
+        <h5>$6703.13</h5>
+        <h5 class="text-danger">-346(-5.15%)</h5>
+      </div>
+    </div>
+    <div class="text-center">
+      <div class="align-middle d-inline-block">
+        <img src="<%= image_path('coins/Bitcoin.png') %>"/>
+        <h4>BTC</h4>
+      </div>
+      <div class="align-middle d-inline-block text-left">
+        <h5>BTC / USD</h5>
+        <h5>$6703.13</h5>
+        <h5 class="text-danger">-346(-5.15%)</h5>
+      </div>
+    </div>
+    <div class="text-center">
+      <div class="align-middle d-inline-block">
+        <img src="<%= image_path('coins/Ethereum.png') %>"/>
+        <h4>ETH</h4>
+      </div>
+      <div class="align-middle d-inline-block text-left">
+        <h5>ETH / USD</h5>
+        <h5>$6703.13</h5>
+        <h5 class="text-danger">-346(-5.15%)</h5>
+      </div>
+    </div>
+    <div class="text-center">
+      <div class="align-middle d-inline-block">
+        <img src="<%= image_path('coins/Litecoin.png') %>"/>
+        <h4>LTC</h4>
+      </div>
+      <div class="align-middle d-inline-block text-left">
+        <h5>LTC / USD</h5>
+        <h5>$6703.13</h5>
+        <h5 class="text-danger">-346(-5.15%)</h5>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="sub-container coin-status pb-5">
+    <div class="container">
+      <!-- TradingView Widget BEGIN -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js" async>
+            {
+                "width": "100%",
+                "height": "800",
+                "locale": "en",
+                "symbolsGroups": [
+                {
+                    "name": "Crypto",
+                    "symbols": [
+                        {
+                            "name": "COINBASE:BTCUSD",
+                            "displayName": "Bitcoin"
+                        },
+                        {
+                            "name": "KRAKEN:ETHUSD",
+                            "displayName": "Ethereum"
+                        },
+                        {
+                            "name": "KRAKEN:LTCUSD",
+                            "displayName": "Litecoin"
+                        },
+                        {
+                            "name": "BITTREX:ADAUSDT",
+                            "displayName": "Cardano"
+                        },
+                        {
+                            "name": "BITFINEX:EOSUSD",
+                            "displayName": "EOS"
+                        },
+                        {
+                            "name": "BITFINEX:NEOUSD",
+                            "displayName": "NEO"
+                        },
+                        {
+                            "name": "KRAKEN:DASHUSD",
+                            "displayName": "DASH"
+                        },
+                        {
+                            "name": "BITFINEX:TRXUSD",
+                            "displayName": "Tron"
+                        },
+                        {
+                            "name": "KRAKEN:ETCUSD",
+                            "displayName": "Ethereum Classic"
+                        },
+                        {
+                            "name": "BINANCE:VENUSD",
+                            "displayName": "VeChain"
+                        },
+                        {
+                            "name": "BINANCE:ICXUSD",
+                            "displayName": "Icon"
+                        },
+                        {
+                            "name": "BITFINEX:OMGUSD",
+                            "displayName": "OmiseGO"
+                        },
+                        {
+                            "name": "BITFINEX:BTGUSD",
+                            "displayName": "Bitcoin Gold"
+                        },
+                        {
+                            "name": "BINANCE:GASUSD",
+                            "displayName": "GAS"
+                        },
+                        {
+                            "name": "BINANCE:PPTUSD",
+                            "displayName": "Populous"
+                        },
+                        {
+                            "name": "BITTREX:WAVESUSD",
+                            "displayName": "Waves"
+                        }
+                    ]
+                }
+            ]
+            }
+        </script>
+      </div>
+      <!-- TradingView Widget END -->
+    </div>
+
+  </div>
+
+
+
+  <div class="sub-container true_global_exchange">
+
+    <div class="d-flex justify-content-center">
+      <div class="welcome-logo">
+        <a href="/" target="blank">
+          <img src="<%= ENV['LOGO_URL'] || image_path('logo.png') %>">
+        </a>
+      </div>
+    </div>
+    <h1 class="text-center">Why ORBITEX?</h1>
+
+    <div class="spliter">
+      <div class="spliter-1"></div>
+      <div class="spliter-2"></div>
+    </div>
+
+    <div class="row align-items-center">
+      <div class="col-md-5">
+        <img class="center-img" src="<%= image_path('true_global_exchange.png') %>">
+      </div>
+      <div class="col-md-7">
+        <div class="description-text">
+          <h1>True Global Exchange</h1>
+          <p>
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+            galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but
+            also the leap into electronic typesetting, remaining essentially unchanged.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-container security row align-items-center">
+    <div class="col-md-7">
+      <div class="description-text mx-auto">
+        <h1>Security</h1>
+        <p>
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+          galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but
+          also the leap into electronic typesetting, remaining essentially unchanged.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <img class="center-img" src="<%= image_path('security.png') %>">
+    </div>
+  </div>
+
+  <div class="sub-container all-platform row align-items-center">
+    <div class="col-md-5">
+      <div class="center-cover">
+        <img src="<%= image_path('all-platform.png') %>">
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="description-text">
+        <h1>All Platform independent</h1>
+        <p>
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+          galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but
+          also the leap into electronic typesetting, remaining essentially unchanged.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-container start-exchange">
+    <div class="start-exchange-text">Start Your Exchange</div>
+    <div class="spliter">
+      <div class="spliter-1"></div>
+      <div class="spliter-2"></div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="sign-cover col-md-8 py-5">
+        <div class="row justify-content-around">
+          <button class="col-sm-4 signup-btn">
+            Sign Up
+          </button>
+          <div class="col-sm-1 signor-btn">
+            or
+          </div>
+          <button class="col-sm-4 signin-btn">
+            Sign In
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

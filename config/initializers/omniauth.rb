@@ -18,7 +18,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       provider :google_oauth2, ENV.fetch('GOOGLE_CLIENT_ID'), ENV.fetch('GOOGLE_CLIENT_SECRET')
 
     when 'barong'
-      require 'omniauth-barong'
+      require 'omniauth-referral-barong'
       provider :barong,
                ENV.fetch('BARONG_CLIENT_ID'),
                ENV.fetch('BARONG_CLIENT_SECRET'),

@@ -38,6 +38,18 @@ class Trade < ActiveRecord::Base
       trades
     end
 
+    ##
+    # Topdev filter custom
+    #
+
+    def filter2(market, from, to, limit, order)
+      trades = with_market(market).order(order)
+      trades = trades.limit(limit) if limit.present?
+      trades = trades.where('created_at >= ?', from) if from.present?
+      trades = trades.where('created_at < ?', to) if to.present?
+      trades
+    end
+
     def for_member(market, member, options={})
       trades = filter(market, options[:time_to], options[:from], options[:to], options[:limit], options[:order]).where("ask_member_id = ? or bid_member_id = ?", member.id, member.id)
       trades.each do |trade|

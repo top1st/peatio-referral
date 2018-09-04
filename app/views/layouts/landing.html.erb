@@ -8,6 +8,9 @@
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag 'application', media: 'all' %>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.0/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.0/slick/slick-theme.css"/>
+
     <%= custom_stylesheet_link_tag_for :main %>
 
     <%= include_gon %>
@@ -17,9 +20,12 @@
 
   <body id="<%= body_id %>" data-lang="<%= locale_name %>">
     <div id="wrap">
+      <%= content_for?(:header) ? yield(:header) : render('shared/header') %>
       <%= yield %>
       <div id="push"></div>
     </div>
     <%= render 'shared/footer' %>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.0/slick/slick.min.js"></script>
+    <%= javascript_include_tag 'custom' %>
   </body>
 </html>

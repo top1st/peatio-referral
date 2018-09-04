@@ -18,23 +18,25 @@
 
   <body id="<%= body_id %>" data-lang="<%= "#{locale_name}" %>">
 
-    <div id="wrap">
+    <div id="wrap" class="welcome-background">
       <%- if content_for?(:header) %>
         <%= yield(:header) %>
       <%- else %>
         <%= render 'shared/header' %>
       <%- end %>
-
-      <div class='container'>
-        <%= yield %>
+      <div class="funs_detail">
+        <div class='container-fluid p-5'>
+          <%= yield %>
+        </div>
       </div>
+      
       <div id="push"></div>
     </div>
 
     <%- if content_for?(:footer) %>
       <%= yield(:footer) %>
-    <%- else %>
-      <%= render 'shared/footer' %>
+    <!--<%- else %>-->
+      <!--<%= render 'shared/footer' %>-->
     <%- end %>
 
   </body>

@@ -4,6 +4,10 @@
   </h3>
 <% end %>
 
+<div>
+  <span style="color: green">referral link:</span>  <strong>https://account.monedix.io?referral=<%= current_user.code %></strong>
+</div>
+
 <% content_for :guide do %>
   <% if current_user.admin? %>
     <span class="badge badge-warning">ADMIN</span>

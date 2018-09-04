@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180605104154) do
+ActiveRecord::Schema.define(version: 20180904132313) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "member_id",   limit: 4,                                          null: false
@@ -113,15 +113,18 @@ ActiveRecord::Schema.define(version: 20180605104154) do
   add_index "markets", ["position"], name: "index_markets_on_position", using: :btree
 
   create_table "members", force: :cascade do |t|
-    t.integer  "level",        limit: 1,   default: 0,     null: false
-    t.string   "sn",           limit: 12,                  null: false
-    t.string   "email",        limit: 255,                 null: false
-    t.boolean  "disabled",                 default: false, null: false
-    t.boolean  "api_disabled",             default: false, null: false
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.integer  "level",         limit: 1,   default: 0,     null: false
+    t.string   "sn",            limit: 12,                  null: false
+    t.string   "email",         limit: 255,                 null: false
+    t.boolean  "disabled",                  default: false, null: false
+    t.boolean  "api_disabled",              default: false, null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "referrel_code", limit: 255
+    t.string   "code",          limit: 12,                  null: false
   end
 
+  add_index "members", ["code"], name: "index_members_on_code", unique: true, using: :btree
   add_index "members", ["disabled"], name: "index_members_on_disabled", using: :btree
   add_index "members", ["email"], name: "index_members_on_email", unique: true, using: :btree
   add_index "members", ["sn"], name: "index_members_on_sn", unique: true, using: :btree

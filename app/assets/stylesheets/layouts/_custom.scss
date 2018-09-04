@@ -20,8 +20,8 @@
 }
 
 header .account-settings {
-   min-width: 140px;
-   text-align: center;
+  min-width: 140px;
+  text-align: center;
 }
 
 #deposit_address{
@@ -29,3 +29,258 @@ header .account-settings {
   max-width: 450px;
   white-space: nowrap;
 }
+
+.sub-container {
+  margin-left: -15px;
+  margin-right: -15px;
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+body {
+  background-color: #0a3762;
+}
+
+#wrap {
+}
+
+.welcome-background {
+  background-image: image_url('welcome-background-01.png');
+  background-size: cover;
+  background-position: top;
+}
+
+#welcome-index {
+  .landing-about {
+    max-width: 700px;
+    h1 {
+      font-weight: 900;
+      margin-bottom: 30px;
+      @media (min-width:1200px) {
+        font-size: 2.5rem;
+      }
+    }
+  }
+
+  .ticker-auto-slider {
+    background-color: #012e64;
+
+    .align-middle.d-inline-block {
+      width: 90px;
+    }
+    img {
+      margin-left: auto;
+      margin-right: auto;
+      height: 50px;
+    }
+
+    h4, h5 {
+      margin: 0;
+      line-height: 26px;
+
+    }
+    h5.text-danger {
+      color: red !important;
+      font-weight: 700;
+    }
+  }
+
+  .coin-status {
+    background-color: #051320;
+    .nav-item {
+      a {
+        color: white;
+        width: 280px;
+        justify-content: center;
+        :hover{
+          color: white;
+        }
+      }
+      img {
+        height: 40px;
+        margin-right: 20px;
+      }
+    }
+
+    table {
+      min-width: 800px;
+      thead {
+        i {
+          float: right;
+          line-height: inherit;
+          color: #0aaafa;
+        }
+      }
+
+      tbody {
+        i {
+          float: left;
+          line-height: inherit;
+          color: #9eba46;
+        }
+      }
+    }
+
+    .main-row {
+      background-color: #0f3559;
+    }
+  }
+
+  .true_global_exchange {
+    background-color: #122f4b;
+  }
+
+  .security {
+    background-color: #0c2b4a;
+  }
+
+  .all-platform {
+    background-color: #12304c;
+  }
+
+  .true_global_exchange, .security, .all-platform {
+    padding: 80px 0px;
+    .description-text {
+      padding: 15px;
+      max-width: 700px;
+      color: #d6d6d6;
+      font-size: 21px;
+      h1 {
+        color: #6fb1ff;
+      }
+    }
+  }
+
+  .start-exchange {
+    background-color: #031e36;
+    padding-bottom: 70px;
+    padding-top: 70px;
+    .start-exchange-text {
+      text-align: center;
+      color: white;
+      font-size: 47px;
+    }
+  }
+
+  .sign-cover {
+    background-color: rgba(0,0,0,.5);
+    max-width: 550px;
+    border-radius: 35px;
+    color: white;
+    .signin-btn, .signup-btn, .signor-btn{
+      height: 53px;
+      display: inline-block;
+      line-height: 48px;
+      text-align: center;
+      border-radius: 20px;
+      font-size: 22px;
+      color: white;
+      border-color: #0e44d8;
+    }
+
+    .transparent-btn {
+
+    }
+    .signin-btn {
+      background-color: transparent;
+    }
+    .signup-btn {
+      background-color: #0e44d8;
+    }
+    .singor-btn {
+    }
+  }
+}
+
+.main-font, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .lead, .navbar-brand, .card .title, .title-description, label,
+.control-label, .item-list .item-title, .table.table-boxed thead tr th, .main-logo, .header .header-block-nav .notifications.new .counter, .header .header-block-nav .profile .name {
+  font-family: unset;
+  font-weight: 500; }
+
+.center-cover {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.center-img {
+  transform: translate(-50%, 0px);
+  left: 50%;
+  position: relative;
+}
+
+.orbit-reserved {
+  background-color: #010e19;
+  text-align: center;
+  line-height: 4;
+  font-size: 17px;
+  font-weight: 100;
+}
+
+.spliter-1 {
+  height: 2px;
+  margin: 2px;
+  background: radial-gradient(ellipse at center, rgba(125,185,232,1) 0%,rgba(125,185,232,1) 1%,rgba(125,185,232,1) 15%,rgba(125,185,232,0.7) 36%,rgba(125,185,232,0) 66%);
+}
+
+.spliter-2 {
+  height: 2px;
+  margin: 2px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.65) 20%,rgba(0,0,0,0.47) 34%,rgba(0,0,0,0) 70%,rgba(0,0,0,0) 79%)
+}
+
+.spliter {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.carousel-inner .carousel-item.active,
+.carousel-inner .carousel-item-next,
+.carousel-inner .carousel-item-prev {
+  display: flex;
+}
+
+.carousel-inner .carousel-item-right.active,
+.carousel-inner .carousel-item-next {
+  transform: translateX(25%);
+}
+
+.carousel-inner .carousel-item-left.active,
+.carousel-inner .carousel-item-prev {
+  transform: translateX(-25%);
+}
+
+.carousel-inner .carousel-item-right,
+.carousel-inner .carousel-item-left{
+  transform: translateX(0);
+
+}
+
+.main_nav {
+  min-height: calc(100vh - 116px);
+  background-color: #000204;
+  h3{
+    background-color: #010f1d;
+    padding: 9px;
+    color: grey;
+    text-align: center;
+  }
+  ul.nav-menu-list {
+    padding-left: 0;
+    font-size: 24px;
+    line-height: 2;
+    a {
+      color: darkgray;
+      i {
+        width: 60px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+

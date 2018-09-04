@@ -254,6 +254,8 @@ GEM
     omniauth-oauth2 (1.5.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.2)
+    omniauth-referral-barong (0.1.4)
+      omniauth-oauth2 (~> 1.5)
     paper_trail (3.0.9)
       activerecord (>= 3.0, < 5.0)
       activesupport (>= 3.0, < 5.0)
@@ -470,6 +472,7 @@ DEPENDENCIES
   omniauth-auth0 (~> 2.0.0)
   omniauth-barong (~> 0.1.4)
   omniauth-google-oauth2 (~> 0.5.3)
+  omniauth-referral-barong (~> 0.1.4)
   paper_trail (~> 3.0.9)
   passgen (~> 1.0.2)
   pry-byebug (~> 3.6)
@@ -497,4 +500,4 @@ DEPENDENCIES
   webmock (~> 3.3)
 
 BUNDLED WITH
-   1.16.2
+   1.16.3

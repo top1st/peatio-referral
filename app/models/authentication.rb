@@ -25,7 +25,7 @@ class Authentication < ActiveRecord::Base
 end
 
 # == Schema Information
-# Schema version: 20180605104154
+# Schema version: 20180904132313
 #
 # Table name: authentications
 #
