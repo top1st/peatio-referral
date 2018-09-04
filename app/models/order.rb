@@ -12,6 +12,9 @@ class Order < ActiveRecord::Base
   enumerize :ord_type, in: TYPES, scope: true
 
   after_commit(on: :create) { trigger_pusher_event }
+  # topdev editing...
+  after_commit(on: :update) { trigger_pusher_event }
+
   before_validation :fix_number_precision, on: :create
 
   validates :ord_type, :volume, :origin_volume, :locked, :origin_locked, presence: true
@@ -37,10 +40,10 @@ class Order < ActiveRecord::Base
   after_commit on: :update do
     next unless ord_type == 'limit'
     event = case previous_changes.dig('state', 1)
-      when 'cancel' then 'order_canceled'
-      when 'done'   then 'order_completed'
-      else 'order_updated'
-    end
+              when 'cancel' then 'order_canceled'
+              when 'done'   then 'order_completed'
+              else 'order_updated'
+            end
 
     EventAPI.notify ['market', market_id, event].join('.'), \
       Serializers::EventAPI.const_get(event.camelize).call(self)
@@ -57,13 +60,13 @@ class Order < ActiveRecord::Base
   def trigger_pusher_event
     Member.trigger_pusher_event member_id, :order, \
       id:            id,
-      at:            at,
-      market:        market_id,
-      kind:          kind,
-      price:         price&.to_s('F'),
-      state:         state,
-      volume:        volume.to_s('F'),
-      origin_volume: origin_volume.to_s('F')
+                                at:            at,
+                                market:        market_id,
+                                kind:          kind,
+                                price:         price&.to_s('F'),
+                                state:         state,
+                                volume:        volume.to_s('F'),
+                                origin_volume: origin_volume.to_s('F')
   end
 
   def kind

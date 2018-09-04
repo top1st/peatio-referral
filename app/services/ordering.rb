@@ -20,14 +20,21 @@ class Ordering
   end
 
   def cancel
-    @orders.each(&method(:do_cancel))
+    cancel!
+    # @orders.each(&method(:do_cancel))
+
+    @orders.each do |order|
+      AMQPQueue.enqueue(:matching, action: 'cancel', order: order.to_matching_attributes)
+    end
+
+    true
   end
 
   def cancel!
     ActiveRecord::Base.transaction { @orders.each(&method(:do_cancel!)) }
   end
 
-private
+  private
 
   def do_submit(order)
     order.fix_number_precision # number must be fixed before computing locked

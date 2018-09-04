@@ -34,7 +34,7 @@ module Matching
       @trade
     end
 
-  private
+    private
 
     def validate!
       raise_error(3001, 'Ask price exceeds strike price.') if @ask.ord_type == 'limit' && @ask.price > @price
@@ -62,10 +62,10 @@ module Matching
         validate!
 
         accounts_table = Account
-          .lock
-          .select(:id, :member_id, :currency_id, :balance, :locked)
-          .where(member_id: [@ask.member_id, @bid.member_id].uniq, currency_id: [@market.ask_unit, @market.bid_unit])
-          .each_with_object({}) { |record, memo| memo["#{record.currency_id}:#{record.member_id}"] = record }
+                             .lock
+                             .select(:id, :member_id, :currency_id, :balance, :locked)
+                             .where(member_id: [@ask.member_id, @bid.member_id].uniq, currency_id: [@market.ask_unit, @market.bid_unit])
+                             .each_with_object({}) { |record, memo| memo["#{record.currency_id}:#{record.member_id}"] = record }
 
         @trade = Trade.new \
           ask:           @ask,
@@ -110,20 +110,20 @@ module Matching
 
     def publish_trade
       AMQPQueue.publish :trade, @trade.as_json, {
-        headers: {
-          market:        @market.id,
-          ask_member_id: @ask.member_id,
-          bid_member_id: @bid.member_id
-        }
+          headers: {
+              market:        @market.id,
+              ask_member_id: @ask.member_id,
+              bid_member_id: @bid.member_id
+          }
       }
 
       [@ask, @bid].each do |order|
         next unless order.ord_type == 'limit'
         event = case order.state
-          when 'cancel' then 'order_canceled'
-          when 'done'   then 'order_completed'
-          else 'order_updated'
-        end
+                  when 'cancel' then 'order_canceled'
+                  when 'done'   then 'order_completed'
+                  else 'order_updated'
+                end
         EventAPI.notify ['market', order.market_id, event].join('.'), \
           Serializers::EventAPI.const_get(event.camelize).call(order)
       end
@@ -153,17 +153,20 @@ module Matching
       order.funds_received += income_value
       order.trades_count   += 1
 
+
       if order.volume.zero?
         order.state = Order::DONE
-
         # Unlock not used funds.
         unless order.locked.zero?
           outcome_account.assign_attributes outcome_account.attributes_after_unlock_funds!(order.locked)
         end
+
       elsif order.ord_type == 'market' && order.locked.zero?
         # Partially filled market order has run out it's locked funds.
         order.state = Order::CANCEL
       end
+
+      order.trigger_pusher_event if trade.volume
     end
   end
 end
