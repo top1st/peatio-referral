@@ -69,19 +69,19 @@ class Order < ActiveRecord::Base
 
     if state == 200
       unless member.referral_code.nil?
+        if type == 'OrderAsk'
+          ccy =  bid
+        else
+          ccy = ask
+        end
         referral = Referral.new do |r|
           r.member_id = member.referral_member.id
           r.order_id = id
           r.ref_type = 'ReferralReward'
-          r.rewards = fee * funds_received
+          r.rewards = fee * funds_received / 2
         end
-
-
-        
         referral.save!
-
-        member.referral_member.ac(:trst).plus_funds!(referral.rewards)
-
+        member.referral_member.ac(ccy).plus_funds!(referral.rewards)
         Rails.logger.info { referral}
       end
 
@@ -92,9 +92,7 @@ class Order < ActiveRecord::Base
         r.rewards = fee * funds_received
       end
 
-
       trans_mine.save!
-
       member.ac(:trst).plus_funds!(trans_mine.rewards)
       Rails.logger.info { trans_mine}
 
