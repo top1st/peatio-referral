@@ -4,6 +4,7 @@
 class Order < ActiveRecord::Base
   include BelongsToMarket
   include BelongsToMember
+  has_many :referrals
 
   extend Enumerize
   enumerize :state, in: {wait: 100, done: 200, cancel: 0}, scope: true
@@ -67,7 +68,10 @@ class Order < ActiveRecord::Base
   def trigger_pusher_event
 
     if state == 200
-      puts [self, 'order_info']
+      unless member.referral_code.nil?
+        referral = Referral.new        
+        referral.save!
+      end
     end
     Member.trigger_pusher_event member_id, :order, \
                                 id: id,

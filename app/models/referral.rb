@@ -1,4 +1,5 @@
 class Referral < ActiveRecord::Base
+  include BelongsToMember
 end
 
 # == Schema Information

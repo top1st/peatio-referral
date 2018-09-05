@@ -5,6 +5,7 @@ require 'securerandom'
 
 class Member < ActiveRecord::Base
   has_many :orders
+  has_many :referrals
   has_many :accounts
   has_many :payment_addresses, through: :accounts
   has_many :withdraws, -> { order(id: :desc) }
