@@ -4,7 +4,7 @@
 namespace :admin do
   get '/', to: 'dashboard#index', as: :dashboard
 
-  resources :referrals
+  resources :referrals, only: %i[index show]
   resources :proofs
   resources :markets, except: %i[edit destroy]
   resources :currencies, except: %i[edit destroy]

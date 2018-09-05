@@ -83,6 +83,10 @@ class Member < ActiveRecord::Base
     end
   end
 
+  def referral_member
+    Member.where(code: referral_code).first
+  end
+
   def trades
     Trade.where('bid_member_id = ? OR ask_member_id = ?', id, id)
   end

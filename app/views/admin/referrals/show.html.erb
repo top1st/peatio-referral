@@ -6,6 +6,11 @@
 </p>
 
 <p>
+  <strong>Order:</strong>
+  <%= @referral.order_id %>
+</p>
+
+<p>
   <strong>Ref type:</strong>
   <%= @referral.ref_type %>
 </p>
@@ -15,5 +20,9 @@
   <%= @referral.rewards %>
 </p>
 
-<%= link_to 'Edit', edit_referral_path(@referral) %> |
+<p>
+  <strong>Created:</strong>
+  <%= @referral.created_at %>
+</p>
+
 <%= link_to 'Back', referrals_path %>

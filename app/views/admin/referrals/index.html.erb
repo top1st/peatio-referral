@@ -2,30 +2,35 @@
 
 <h1>Listing Referrals</h1>
 
-<table>
-  <thead>
+<div class="card">
+  <table class="table table-condensed table-striped">
+    <thead>
     <tr>
+      <th>Id</th>
       <th>Member</th>
+      <th>Order</th>
       <th>Ref type</th>
       <th>Rewards</th>
-      <th colspan="3"></th>
+      <th>At</th>
+      <th colspan="4"></th>
     </tr>
-  </thead>
+    </thead>
 
-  <tbody>
+    <tbody>
     <% @referrals.each do |referral| %>
       <tr>
+        <td><%= referral.id %></td>
         <td><%= referral.member_id %></td>
+        <td><%= referral.order_id %></td>
         <td><%= referral.ref_type %></td>
         <td><%= referral.rewards %></td>
+        <td><%= referral.created_at %></td>
         <td><%= link_to 'Show', referral %></td>
-        <td><%= link_to 'Edit', edit_referral_path(referral) %></td>
-        <td><%= link_to 'Destroy', referral, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+
+</div>
 
 <br>
-
-<%= link_to 'New Referral', new_referral_path %>

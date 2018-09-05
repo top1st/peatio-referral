@@ -1,8 +1,21 @@
+<% content_for :guide_title do %>
+  <h1>Referral</h1>
+<% end %>
+
+
+
+<% content_for :guide do %>
+  <div>
+    <span style="color: green">referral link:</span>  <strong>https://account.monedix.io?referral=<%= current_user.code %></strong>
+  </div>
+<% end %>
+
+
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Member:</strong>
-  <%= @referral.member_id %>
+  <strong>Order:</strong>
+  <%= @referral.order_id %>
 </p>
 
 <p>
@@ -15,5 +28,9 @@
   <%= @referral.rewards %>
 </p>
 
-<%= link_to 'Edit', edit_referral_path(@referral) %> |
+<p>
+  <strong>Created:</strong>
+  <%= @referral.created_at %>
+</p>
+
 <%= link_to 'Back', referrals_path %>

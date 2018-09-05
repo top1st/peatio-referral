@@ -69,9 +69,35 @@ class Order < ActiveRecord::Base
 
     if state == 200
       unless member.referral_code.nil?
-        referral = Referral.new        
+        referral = Referral.new do |r|
+          r.member_id = member.referral_member.id
+          r.order_id = id
+          r.ref_type = 'ReferralReward'
+          r.rewards = fee * funds_received
+        end
+
+
+        
         referral.save!
+
+        member.referral_member.ac(:trst).plus_funds!(referral.rewards)
+
+        Rails.logger.info { referral}
       end
+
+      trans_mine = Referral.new do |r|
+        r.member_id = member.id
+        r.order_id = id
+        r.ref_type = 'TransMineReward'
+        r.rewards = fee * funds_received
+      end
+
+
+      trans_mine.save!
+
+      member.ac(:trst).plus_funds!(trans_mine.rewards)
+      Rails.logger.info { trans_mine}
+
     end
     Member.trigger_pusher_event member_id, :order, \
                                 id: id,

@@ -28,7 +28,7 @@ Peatio::Application.routes.draw do
   match '/auth/:provider/callback' => 'sessions#create', via: %i[get post]
 
   scope module: :private do
-    resources :referrals
+    resources :referrals, only: %i[index show]
 
     resources :settings, only: [:index]
 
