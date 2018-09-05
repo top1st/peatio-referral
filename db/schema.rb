@@ -194,11 +194,15 @@ ActiveRecord::Schema.define(version: 20180905082814) do
 
   create_table "referrals", force: :cascade do |t|
     t.integer  "member_id",  limit: 4
+    t.integer  "order_id",   limit: 4
     t.string   "ref_type",   limit: 255
-    t.decimal  "rewards",                precision: 10
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.decimal  "rewards",                precision: 32, scale: 16
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
   end
+
+  add_index "referrals", ["member_id"], name: "index_referrals_on_member_id", using: :btree
+  add_index "referrals", ["order_id"], name: "index_referrals_on_order_id", using: :btree
 
   create_table "trades", force: :cascade do |t|
     t.decimal  "price",                    precision: 32, scale: 16, null: false
