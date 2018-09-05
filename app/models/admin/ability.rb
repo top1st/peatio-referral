@@ -11,6 +11,7 @@ module Admin
       can :read, Order
       can :read, Trade
       can :read, Proof
+      can :read, Referral
       can :update, Proof
       can :manage, Member
 

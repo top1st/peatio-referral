@@ -704,6 +704,7 @@ en:
         items:
           operating:
             proofs: Proof
+            referrals: Referral
             deposits: Deposits
             withdraws: Withdraws
           deposits:

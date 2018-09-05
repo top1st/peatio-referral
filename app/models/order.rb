@@ -6,48 +6,55 @@ class Order < ActiveRecord::Base
   include BelongsToMember
 
   extend Enumerize
-  enumerize :state, in: { wait: 100, done: 200, cancel: 0 }, scope: true
+  enumerize :state, in: {wait: 100, done: 200, cancel: 0}, scope: true
 
   TYPES = %w[ market limit ]
   enumerize :ord_type, in: TYPES, scope: true
 
-  after_commit(on: :create) { trigger_pusher_event }
+  after_commit(on: :create) {trigger_pusher_event}
   # topdev editing...
-  after_commit(on: :update) { trigger_pusher_event }
+  after_commit(on: :update) {trigger_pusher_event}
+
 
   before_validation :fix_number_precision, on: :create
 
   validates :ord_type, :volume, :origin_volume, :locked, :origin_locked, presence: true
-  validates :origin_volume, numericality: { greater_than: 0.to_d }
-  validates :price, numericality: { greater_than: 0, allow_nil: false }, if: -> (order) { order.ord_type == 'limit' }
-  validate  :market_order_validations, if: -> (order) { order.ord_type == 'market' }
+  validates :origin_volume, numericality: {greater_than: 0.to_d}
+  validates :price, numericality: {greater_than: 0, allow_nil: false}, if: -> (order) {order.ord_type == 'limit'}
+  validate :market_order_validations, if: -> (order) {order.ord_type == 'market'}
 
-  WAIT   = 'wait'
-  DONE   = 'done'
+  WAIT = 'wait'
+  DONE = 'done'
   CANCEL = 'cancel'
 
-  scope :done, -> { with_state(:done) }
-  scope :active, -> { with_state(:wait) }
+  scope :done, -> {with_state(:done)}
+  scope :active, -> {with_state(:wait)}
 
-  before_validation(on: :create) { self.fee = config.public_send("#{kind}_fee") }
+  before_validation(on: :create) {self.fee = config.public_send("#{kind}_fee")}
 
   after_commit on: :create do
+
     next unless ord_type == 'limit'
     EventAPI.notify ['market', market_id, 'order_created'].join('.'), \
       Serializers::EventAPI::OrderCreated.call(self)
   end
 
+
   after_commit on: :update do
     next unless ord_type == 'limit'
     event = case previous_changes.dig('state', 1)
-              when 'cancel' then 'order_canceled'
-              when 'done'   then 'order_completed'
-              else 'order_updated'
+              when 'cancel' then
+                'order_canceled'
+              when 'done' then
+                'order_completed'
+              else
+                'order_updated'
             end
 
     EventAPI.notify ['market', market_id, event].join('.'), \
       Serializers::EventAPI.const_get(event.camelize).call(self)
   end
+
 
   def funds_used
     origin_locked - locked
@@ -58,14 +65,18 @@ class Order < ActiveRecord::Base
   end
 
   def trigger_pusher_event
+
+    if state == 200
+      puts [self, 'order_info']
+    end
     Member.trigger_pusher_event member_id, :order, \
-      id:            id,
-                                at:            at,
-                                market:        market_id,
-                                kind:          kind,
-                                price:         price&.to_s('F'),
-                                state:         state,
-                                volume:        volume.to_s('F'),
+                                id: id,
+                                at: at,
+                                market: market_id,
+                                kind: kind,
+                                price: price&.to_s('F'),
+                                state: state,
+                                volume: volume.to_s('F'),
                                 origin_volume: origin_volume.to_s('F')
   end
 
@@ -82,14 +93,14 @@ class Order < ActiveRecord::Base
   end
 
   def to_matching_attributes
-    { id:        id,
-      market:    market_id,
-      type:      type[-3, 3].downcase.to_sym,
-      ord_type:  ord_type,
-      volume:    volume,
-      price:     price,
-      locked:    locked,
-      timestamp: created_at.to_i }
+    {id: id,
+     market: market_id,
+     type: type[-3, 3].downcase.to_sym,
+     ord_type: ord_type,
+     volume: volume,
+     price: price,
+     locked: locked,
+     timestamp: created_at.to_i}
   end
 
   def fix_number_precision
@@ -108,12 +119,13 @@ class Order < ActiveRecord::Base
   end
 
   FUSE = '0.9'.to_d
+
   def estimate_required_funds(price_levels)
     required_funds = Account::ZERO
     expected_volume = volume
 
     start_from, _ = price_levels.first
-    filled_at     = start_from
+    filled_at = start_from
 
     until expected_volume.zero? || price_levels.empty?
       level_price, level_volume = price_levels.shift
@@ -125,7 +137,7 @@ class Order < ActiveRecord::Base
     end
 
     raise "Market is not deep enough" unless expected_volume.zero?
-    raise "Volume too large" if (filled_at-start_from).abs/start_from > FUSE
+    raise "Volume too large" if (filled_at - start_from).abs / start_from > FUSE
 
     required_funds
   end

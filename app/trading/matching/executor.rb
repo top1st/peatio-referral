@@ -156,6 +156,8 @@ module Matching
 
       if order.volume.zero?
         order.state = Order::DONE
+
+
         # Unlock not used funds.
         unless order.locked.zero?
           outcome_account.assign_attributes outcome_account.attributes_after_unlock_funds!(order.locked)

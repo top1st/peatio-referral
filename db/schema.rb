@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180904132313) do
+ActiveRecord::Schema.define(version: 20180905082814) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "member_id",   limit: 4,                                          null: false
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(version: 20180904132313) do
     t.boolean  "api_disabled",              default: false, null: false
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
-    t.string   "referrel_code", limit: 255
+    t.string   "referral_code", limit: 255
     t.string   "code",          limit: 12,                  null: false
   end
 
@@ -191,6 +191,14 @@ ActiveRecord::Schema.define(version: 20180904132313) do
   end
 
   add_index "proofs", ["currency_id"], name: "index_proofs_on_currency_id", using: :btree
+
+  create_table "referrals", force: :cascade do |t|
+    t.integer  "member_id",  limit: 4
+    t.string   "ref_type",   limit: 255
+    t.decimal  "rewards",                precision: 10
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
 
   create_table "trades", force: :cascade do |t|
     t.decimal  "price",                    precision: 32, scale: 16, null: false

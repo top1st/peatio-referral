@@ -174,7 +174,7 @@ private
 end
 
 # == Schema Information
-# Schema version: 20180904132313
+# Schema version: 20180905040944
 #
 # Table name: members
 #
@@ -186,7 +186,7 @@ end
 #  api_disabled  :boolean          default(FALSE), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  referrel_code :string(255)
+#  referral_code :string(255)
 #  code          :string(12)       not null
 #
 # Indexes

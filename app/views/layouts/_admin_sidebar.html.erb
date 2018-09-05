@@ -63,6 +63,15 @@
         </li>
       <% end %>
 
+      <% if can? :read, Referral %>
+        <li class="list-icon-item <%= check_active(Referral) %>">
+          <%= link_to admin_referrals_path do %>
+            <i class="icon fa fa-star"></i>
+            <span class="menu-text"><%= t('.menus.items.operating.referrals') %></span>
+          <% end %>
+        </li>
+      <% end %>
+
       <% if can? :menu, Deposit %>
         <li class="list-icon-item <%= check_active('deposits') %>">
           <%= link_to "javascript:void(0);", class: 'has-arrow waves-effect waves-dark has-sub-menu', 'aria-expanded': 'false', data: {toggle: 'popover'} do %>
