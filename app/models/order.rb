@@ -65,6 +65,10 @@ class Order < ActiveRecord::Base
     market
   end
 
+  def house_fee?
+    member.house_fee
+  end
+
   def trigger_pusher_event
 
     if type == 'OrderAsk'
