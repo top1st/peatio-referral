@@ -67,13 +67,15 @@ class Order < ActiveRecord::Base
 
   def trigger_pusher_event
 
+    if type == 'OrderAsk'
+      ccy = bid
+    else
+      ccy = ask
+    end
+
     if state == 200
-      unless member.referral_code.nil?
-        if type == 'OrderAsk'
-          ccy =  bid
-        else
-          ccy = ask
-        end
+      unless member.referral_code.nil? || member.referral_code.empty?
+
         referral = Referral.new do |r|
           r.member_id = member.referral_member.id
           r.order_id = id
@@ -82,21 +84,29 @@ class Order < ActiveRecord::Base
         end
         referral.save!
         member.referral_member.ac(ccy).plus_funds!(referral.rewards)
-        Rails.logger.info { referral}
+        Rails.logger.info {referral}
       end
 
-      trans_mine = Referral.new do |r|
-        r.member_id = member.id
-        r.order_id = id
-        r.ref_type = 'TransMineReward'
-        r.rewards = fee * funds_received
+      unless [ask, bid].include?(:trst)
+
+        rate = Global['trst' + ccy.to_s].ticker[:last]
+        if rate.nil? || rate == 0
+          rate = 1.to_d
+        end
+        rate = 1 / rate
+
+        trans_mine = Referral.new do |r|
+          r.member_id = member.id
+          r.order_id = id
+          r.ref_type = 'TransMineReward'
+          r.rewards = fee * funds_received * rate
+        end
+        trans_mine.save!
+        member.ac(:trst).plus_funds!(trans_mine.rewards)
+        Rails.logger.info {trans_mine}
       end
-
-      trans_mine.save!
-      member.ac(:trst).plus_funds!(trans_mine.rewards)
-      Rails.logger.info { trans_mine}
-
     end
+
     Member.trigger_pusher_event member_id, :order, \
                                 id: id,
                                 at: at,

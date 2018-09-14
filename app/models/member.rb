@@ -179,7 +179,7 @@ private
 end
 
 # == Schema Information
-# Schema version: 20180905040944
+# Schema version: 20180914084656
 #
 # Table name: members
 #
@@ -193,6 +193,7 @@ end
 #  updated_at    :datetime         not null
 #  referral_code :string(255)
 #  code          :string(12)       not null
+#  house_fee     :boolean          default(FALSE), not null
 #
 # Indexes
 #

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180905082814) do
+ActiveRecord::Schema.define(version: 20180914084656) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "member_id",   limit: 4,                                          null: false
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20180905082814) do
     t.datetime "updated_at",                                null: false
     t.string   "referral_code", limit: 255
     t.string   "code",          limit: 12,                  null: false
+    t.boolean  "house_fee",                 default: false, null: false
   end
 
   add_index "members", ["code"], name: "index_members_on_code", unique: true, using: :btree

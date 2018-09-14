@@ -142,6 +142,7 @@ module Matching
 
     def strike(trade, order, outcome_account, income_account)
       outcome_value, income_value = OrderAsk === order ? [trade.volume, trade.funds] : [trade.funds, trade.volume]
+
       fee                         = income_value * order.fee
       real_income_value           = income_value - fee
 
