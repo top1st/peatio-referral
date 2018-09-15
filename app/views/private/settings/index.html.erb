@@ -5,7 +5,24 @@
 <% end %>
 
 <div>
-  <span style="color: green">referral link:</span>  <strong>https://account.monedix.io?referral=<%= current_user.code %></strong>
+  <span style="color: green">referral link:</span>
+  <strong>https://account.monedix.io?referral=<%= current_user.code %></strong>
+</div>
+
+<div>
+  <span style="color: green">Using HouseCoin pay for fees:</span>
+  <a href="<%= toggle_fee_settings_path %>" data-remote="true" rel="nofollow" data-method="post">
+    <span class="switch switch-sm">
+      <input type="checkbox" class="switch" id="switch-id"
+             <% if current_user.house_fee %>
+          checked
+      <% end %>
+      >
+      <label for="switch-id"></label>
+    </span>
+  </a>
+
+
 </div>
 
 <% content_for :guide do %>

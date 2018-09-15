@@ -6,6 +6,11 @@ module Private
     def index
 
     end
+
+    def toggle_fee
+      current_user.house_fee = !current_user.house_fee
+      current_user.save!
+    end
   end
 end
 

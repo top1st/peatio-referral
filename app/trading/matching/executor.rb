@@ -143,9 +143,9 @@ module Matching
     def strike(trade, order, outcome_account, income_account)
       outcome_value, income_value = OrderAsk === order ? [trade.volume, trade.funds] : [trade.funds, trade.volume]
 
-      fee = 0
-      unless order.house_fee? do
-        fee               = income_value * order.fee
+      fee = income_value * order.fee
+      if order.house_fee(income_value)
+        fee = 0
       end
       real_income_value   = income_value - fee
 
@@ -172,7 +172,7 @@ module Matching
         order.state = Order::CANCEL
       end
 
-      order.trigger_pusher_event if trade.volume
+      order.trigger_pusher_event(income_value) if trade.volume
     end
   end
 end

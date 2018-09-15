@@ -65,19 +65,20 @@ class Order < ActiveRecord::Base
     market
   end
 
-  def house_fee?
-    member.house_fee
+  def house_fee(income_value)
+    member.house_fee && member.ac(:trst).balance > fee * income_value * rate && income_value > 0
   end
 
-  def trigger_pusher_event
 
-    if type == 'OrderAsk'
-      ccy = bid
-    else
-      ccy = ask
+  def trigger_pusher_event(income_value = 0)
+
+    if house_fee(income_value)
+      rewards = fee * income_value * rate
+      member.ac(:trust).sub_funds!(rewards)
     end
 
     if state == 200
+
       unless member.referral_code.nil? || member.referral_code.empty?
 
         referral = Referral.new do |r|
@@ -91,24 +92,22 @@ class Order < ActiveRecord::Base
         Rails.logger.info {referral}
       end
 
-      unless [ask, bid].include?(:trst)
-
-        rate = Global['trst' + ccy.to_s].ticker[:last]
-        if rate.nil? || rate == 0
-          rate = 1.to_d
+      unless house_fee(income_value)
+        unless [ask, bid].include?(:trst)
+          rewards = fee * funds_received * rate
+          trans_mine = Referral.new do |r|
+            r.member_id = member.id
+            r.order_id = id
+            r.ref_type = 'TransMineReward'
+            r.rewards = rewards
+          end
+          trans_mine.save!
+          member.ac(:trst).plus_funds!(trans_mine.rewards)
+          Rails.logger.info {trans_mine}
         end
-        rate = 1 / rate
-
-        trans_mine = Referral.new do |r|
-          r.member_id = member.id
-          r.order_id = id
-          r.ref_type = 'TransMineReward'
-          r.rewards = fee * funds_received * rate
-        end
-        trans_mine.save!
-        member.ac(:trst).plus_funds!(trans_mine.rewards)
-        Rails.logger.info {trans_mine}
       end
+
+
     end
 
     Member.trigger_pusher_event member_id, :order, \
@@ -155,6 +154,22 @@ class Order < ActiveRecord::Base
   end
 
   private
+
+  def ccy
+    if type == 'OrderAsk'
+      bid
+    else
+      ask
+    end
+  end
+
+  def rate
+    r_price = Global['trst' + ccy.to_s].ticker[:last]
+    if r_price.nil? || r_price == 0
+      r_price = 1.to_d
+    end
+    1 / r_price
+  end
 
   def market_order_validations
     errors.add(:price, 'must not be present') if price.present?

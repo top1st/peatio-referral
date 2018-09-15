@@ -30,7 +30,11 @@ Peatio::Application.routes.draw do
   scope module: :private do
     resources :referrals, only: %i[index show]
 
-    resources :settings, only: [:index]
+    resources :settings, only: [:index] do
+      collection do
+        post :toggle_fee
+      end
+    end
 
     resources :withdraw_destinations, only: %i[ create update ]
 
