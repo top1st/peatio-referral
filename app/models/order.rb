@@ -74,7 +74,7 @@ class Order < ActiveRecord::Base
 
     if house_fee(income_value)
       rewards = fee * income_value * rate
-      member.ac(:trust).sub_funds!(rewards)
+      member.ac(:trst).sub_funds!(rewards)
     end
 
     if state == 200
